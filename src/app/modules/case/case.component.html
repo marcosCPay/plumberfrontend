@@ -1,0 +1,75 @@
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    
+                    <div class="card-header" style=" background-color:white;border:none;margin-top:50px;">
+                        <h3 class="card-title">Open Cases</h3>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table"
+                            class="table row-border hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <td colspan="9" style="border: none;">
+                                        <p style="white-space: nowrap; margin: 0; text-align: left;">
+                                            (*) Columns highlighted in green are editable. In order to modify a value of a single cell, please, double click the cell.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Case ID</th>
+                                    <th>Provider</th>
+                                    <th>Insured</th>
+                                    <th>Type of claim</th>
+                                    <th>Case Number</th>
+                                    <th>Date of loss</th>
+                                    <th>Date of service</th>
+                                    <th>Claim Number</th>
+                                    <th>Insurance Company</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let case of cases">
+                                    <td>{{case.data.case_id}}</td>
+                                    <td>{{case.data.provider}}</td>
+                                    <td>{{case.data.insured}}</td>
+                                    <td>{{case.data.type_of_claim}}</td>
+                                    <td>{{case.data.case_number}}</td>
+                                    <td>{{case.data.date_of_loss}}</td>
+                                    <td>{{case.data.date_of_service}}</td>
+                                    <td>{{case.data.claim_number}}</td>
+                                    <td>{{case.data.insurance_company}}</td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <button (click)="view(case.data.case_id)" type="button" class="btn btn-warning" data-toggle="modal"
+                                            data-target="#modal-default">
+                                                <i class="fas fa-edit" ></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    
+                    <div class="card-header" style=" background-color:white;border:none;margin-top:50px;">
+                        <h3 class="card-title">Open Cases (Case ID = {{case.case_id}})</h3>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

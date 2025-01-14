@@ -1,0 +1,84 @@
+<div class="container">
+    <div class="login-box">
+        <form ngNativeValidate [formGroup]="formRegister" (ngSubmit)="submit()">
+            <div class="">
+                <p class="registration-title">Mitigation Company Registration</p>
+                <p>Complete the required fields below to register as a mitigation company.</p>
+            </div>
+
+            <div class="form-group position-relative mb-4" style="margin-top:40px;">
+                <input type="text" id="firstName" name="firstName" class="form-control form-control-lg" placeholder=" "
+                     formControlName="name">
+                <label for="name" class="floating-label position-absolute">Name</label>
+            </div>
+
+            <div class="form-group position-relative mb-4">
+                <input type="text" id="contactName" name="contactName" class="form-control form-control-lg" placeholder=" "
+                     formControlName="contactName">
+                <label for="name" class="floating-label position-absolute">Contact Name</label>
+            </div>
+
+            <div class="form-group position-relative mb-4">
+                <input type="text" id="ein" name="ein" class="form-control form-control-lg" placeholder=" " 
+                    formControlName="ein" [ngClass]="{'is-invalid': formRegister.get('ein')?.invalid && formRegister.get('ein')?.touched}">
+                <label for="ein" class="floating-label position-absolute">EIN</label>
+                <div class="invalid-feedback" *ngIf="formRegister.get('ein')?.invalid && formRegister.get('ein')?.touched">
+                    The EIN must be exactly 9 digits.
+                  </div>
+            </div>
+
+            <div class="form-group position-relative mb-4">
+                <input type="email" id="email" name="email" class="form-control form-control-lg" placeholder=" "
+                     formControlName="email" [ngClass]="{'is-invalid': formRegister.get('email')?.invalid && formRegister.get('email')?.touched}">
+                <label for="email" class="floating-label position-absolute">Email Address</label>
+                <div class="invalid-feedback" *ngIf="formRegister.get('email')?.invalid && formRegister.get('email')?.touched">
+                    Please enter a valid email address.
+                </div>
+            </div>
+
+            <div class="form-group position-relative mb-4">
+                <input type="password" id="password" name="password" class="form-control form-control-lg"
+                    placeholder=" " formControlName="password">
+                <label for="password" class="floating-label position-absolute">Password</label>
+            </div>
+
+            <div class="form-group position-relative mb-4">
+
+                <input type="tel" id="phone" name="phone" class="form-control form-control-lg" placeholder=" "
+                    formControlName="phone" [ngClass]="{'is-invalid': formRegister.get('phone')?.invalid && formRegister.get('phone')?.touched}">
+                <label for="phone" class="floating-label position-absolute">Phone Number</label>
+                <div class="invalid-feedback" *ngIf="formRegister.get('phone')?.invalid && formRegister.get('phone')?.touched">
+                    Please enter a valid U.S. phone number.
+                </div>
+            </div>
+
+            <div class="row g-2">
+                <div class="col-6 pe-2">
+                    <button type="button" class="btn btn-select w-100"
+                        (click)="selectRegistrationType('paypal')" [class.selected]="isPaypal" aria-pressed="false">Paypal</button>
+                </div>
+                <div class="col-6 pe-2">
+                    <button type="button" class="btn btn-select w-100" (click)="selectRegistrationType('bank')" [class.selected]="!isPaypal" aria-pressed="false">Bank</button>
+                </div>
+            </div>
+
+            <div class="form-group position-relative mb-4" style="margin-top:40px;">
+                <input type="text" id="paymentMethod" name="paymentMethod" class="form-control form-control-lg"
+                    placeholder=" " formControlName="paymentMethod">
+                <label for="paymentMethod" class="floating-label position-absolute">{{ infoPaypalLabel }}</label>
+            </div>
+
+            <div class="form-group">
+                <label for="selectServiceArea">Service Area</label>
+                <select required name="serviceArea" class="form-control" formControlName="serviceAreaId">
+                    <option value="" disabled selected hidden>Select a service Area</option>
+                    <option  *ngFor="let serviceArea of serviceAreas" [value]="serviceArea.id">{{serviceArea.name}}</option>
+                </select>
+            </div>
+
+            <div class="form-group position-relative mb-4">
+                <button type="submit" class="btn-select">Create Mitigation Company</button>
+            </div>
+        </form>
+    </div>
+</div>

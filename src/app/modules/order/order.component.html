@@ -1,0 +1,271 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Pedido</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Mantenimiento</a></li>
+                    <li class="breadcrumb-item active">Pedidos</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-success" (click)="creating=true;" data-toggle="modal"
+                    data-target="#modal-default"><i class="fa fa-plus"></i>&nbsp;&nbsp; Nuevo Pedido</button>
+                <br><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Lista de Pedidos</h3>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table"
+                            class="table row-border hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Fecha de Pedido</th>
+                                    <th>Estado</th>
+                                    <th>Fecha de Entrega</th>
+                                    <th>Precio total</th>
+                                    <th>Cliente</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let order of orders">
+                                    <td>{{order.OrderDate}}</td>
+                                    <td>{{order.State}}</td>
+                                    <td>{{order.DeliveryDate | date:"dd/MM/yyyy"}}</td>
+                                    <td>S/.{{order.TotalPrice.toFixed(2)}}</td>
+                                    <td>{{order.clientName}} {{order.clientLastName}}</td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <button (click)="editOrder(order.OrderId)" type="button"
+                                                class="btn btn-warning" data-toggle="modal"
+                                                data-target="#modal-defaultorder">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button (click)="deleteOrder(order.OrderId)" type="button"
+                                                class="btn btn-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-default" data-backdrop="static">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form ngNativeValidate [formGroup]="formOrder" (ngSubmit)="submit()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{creating?'Nuevo':'Editando'}} orden</h4>
+                        <button (click)="closeModal()" type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="inputDeliveryDate">Fecha de Entrega</label>
+                            <input required type="date" class="form-control" Name="" formControlName="DeliveryDate"
+                                class="form-control" placeholder="Ingrese fecha de entrega" #DeliveryDate required>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectClient">Cliente</label>
+                            <select name="Client" class="form-control" formControlName="ClientId" #ClientId required>
+                                <option value="" disabled selected hidden>Selecciona un cliente</option>
+                                <option *ngFor="let client of clients" [value]="client.ClientId">{{client.Name}}
+                                    {{client.LastName}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectProduct">Producto</label>
+                            <select name="Product" class="form-control" formControlName="ProductId"
+                                (change)="updateUbications()" #ProductId required>
+                                <option value="" disabled selected hidden>Selecciona un producto</option>
+                                <option *ngFor="let product of products" [value]="product.ProductId">
+                                    {{product.Description}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectUbication">Almacén</label>
+                            <select name="Ubication" class="form-control" formControlName="UbicationId" #UbicationId required>
+                                <option value="" disabled selected hidden>Selecciona el almacén</option>
+                                <option *ngFor="let ubication of ubications" [value]="ubication.UbicationId">
+                                    {{ubication.Name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputAmount">Cantidad</label>
+                            <input required type="text" class="form-control" Name="" formControlName="Amount"
+                                class="form-control" placeholder="Ingrese cantidad" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-primary" (click)="addProduct()"><i class="fa fa-save"></i>&nbsp;&nbsp;
+                            Agregar</button>
+                    </div>
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table"
+                        class="table row-border hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Codigo de Producto</th>
+                                <th>Producto</th>
+                                <th>Precio de venta</th>
+                                <th>Cantidad</th>
+                                <th>Precio total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let element of elements">
+                                <td>{{element.productid}}</td>
+                                <td>{{element.product}}</td>
+                                <td>S/.{{element.price}}</td>
+                                <td>{{element.amount}}</td>
+                                <td>S/.{{(element.price*element.amount).toFixed(2)}}</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button (click)="editElement(element.productid)" type="button"
+                                            class="btn btn-warning">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button (click)="deleteElement(element.productid,element.ubicationid)" type="button"
+                                            class="btn btn-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>S/.{{this.finalprice.toFixed(2)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeModal()">
+                            Cerrar</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;&nbsp;
+                            Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-defaultorder" data-backdrop="static">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form ngNativeValidate [formGroup]="formEditOrder" (ngSubmit)="submitOrder()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Editando orden</h4>
+                        <button (click)="closeModal()" type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="inputOrderDate">Fecha de creación de orden</label>
+                            <input readonly type="text" class="form-control" Name="" formControlName="OrderDate"
+                                class="form-control" placeholder="Ingrese fecha de creación de orden" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectState">Estado</label>
+                            <select name="State" class="form-control" formControlName="State" #selectState (change)="updateOldUbications()">
+                                <option value="" disabled selected hidden>Selecciona un estado</option>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="Cancelado">Cancelado</option>
+                                <option value="En proceso">En proceso</option>
+                                <option value="Despachado">Despachado</option>
+                            </select>
+                        </div>
+                        <div class="form-group" *ngIf="showUbication">
+                            <label for="selectUbication">Ubicacion para devolver</label>
+                            <select name="Ubication" class="form-control" formControlName="UbicationId">
+                                <option value="" disabled selected hidden>Selecciona un almacén para devolver los productos</option>
+                                <option *ngFor="let oldubication of oldubications" [value]="oldubication.UbicationId">
+                                    {{oldubication.Name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDeliveryDate">Fecha de entrega de orden</label>
+                            <input readonly type="date" class="form-control" Name="" formControlName="DeliveryDate"
+                                class="form-control" placeholder="Ingrese fecha de entrega de orden" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputTotalPrice">Precio total</label>
+                            <input readonly type="text" class="form-control" Name="" formControlName="TotalPrice"
+                                class="form-control" placeholder="Ingrese precio total" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectClient">Cliente</label>
+                            <select readonly name="Client" class="form-control" formControlName="ClientId">
+                                <option value="" disabled selected hidden>Selecciona un cliente</option>
+                                <option *ngFor="let client of clients" [value]="client.ClientId">{{client.Name}}
+                                    {{client.LastName}}
+                                </option>
+                            </select>
+                            <span *ngIf="this.formEditOrder.value.ClientId==''" class="error-custom">Seleccione el
+                                cliente</span>
+                        </div>
+                    </div>
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table"
+                        class="table row-border hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Codigo de Producto</th>
+                                <th>Producto</th>
+                                <th>Precio de venta</th>
+                                <th>Cantidad</th>
+                                <th>Precio total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let element of elements">
+                                <td>{{element.productid}}</td>
+                                <td>{{element.product}}</td>
+                                <td>S/.{{element.price}}</td>
+                                <td>{{element.amount}}</td>
+                                <td>S/.{{(element.price*element.amount).toFixed(2)}}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>S/.{{this.finalprice.toFixed(2)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeModal()">
+                            Cerrar</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;&nbsp;
+                            Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

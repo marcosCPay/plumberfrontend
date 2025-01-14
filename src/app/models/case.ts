@@ -1,0 +1,40 @@
+export class Case {
+    recordid!:number;
+    case_id!:string;
+    provider!:string;
+    insured!:string;
+    type_of_claim!:string;
+    case_number!:string;
+    date_of_loss!:Date;
+    date_of_service!:Date;
+    claim_number!:string;
+    first_notice_of_loss!:Date;
+    types_of_services!:string;
+    total_bill_amount!:number;
+    total_collections!:number;
+    total_balance!:number;
+    voluntary_payment_date!:Date;
+    policy_number!:string;
+    insurance_company!:string;
+    day_demand_sent!:Date;
+    case_filed!:Date;
+    corporate_representative!:string;
+    engineer!:string;
+    insurance_expert!:string;
+    pricing_expert!:string;
+    indoor_environmental_professio!:string;
+    inspector!:string;
+    ps_corporate_rep!:string;
+    datecreate!:Date;
+    dateupdate!:Date;
+    updated!:Date;
+    updated_in_date!:Date;
+    court!:string;
+    county!:string;
+    final_status!:string;
+    collection_law_firm!:string;
+    attorney!:string;
+    ho_attorney!:string;
+    ho_law_firm!:string;
+
+}

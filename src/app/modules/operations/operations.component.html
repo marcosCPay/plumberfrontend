@@ -1,0 +1,78 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Operaciones</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Mantenimiento</a></li>
+                    <li class="breadcrumb-item active">Operaciones</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Operaciones</h3>
+                    </div>
+                    <form ngNativeValidate [formGroup]="formOperation" (ngSubmit)="submit()">
+                        <input required type="text" id="balance" class="form-control" name="" formControlName="Balance" 
+                                class="form-control" placeholder="Ingrese saldo inicial" required [disabled]="balancedisabled">
+                                <div class="modal-footer justify-content-between">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;&nbsp;
+                                        Registrar saldo</button>
+                                </div>
+                    </form>
+                    <div class="card-body table-responsive">
+                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table" class="table row-border hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Descripcion</th>
+                                    <th>Usuario</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Cantidad</th>
+                                    <th>Ingresos</th>
+                                    <th>Egresos</th>
+                                    <th>Saldo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let operation of operations">
+                                    <td>{{operation.Date}}</td>
+                                    <td>{{operation.Description}}</td>
+                                    <td>{{operation.userName}}</td>
+                                    <td>S/.{{operation.Description.includes('Venta')?operation.salePrice.toFixed(2):(operation.purchasePrice)}}</td>
+                                    <td>{{this.getAmount(operation.Description)}}</td>
+                                    <td>{{operation.Description.includes('Venta')?'S/.'+(operation.salePrice*this.getAmount(operation.Description)).toFixed(2):' '}}</td>
+                                    <td>{{operation.Description.includes('Compra')?'S/.'+(operation.purchasePrice*this.getAmount(operation.Description)).toFixed(2):' '}}</td>
+                                    <td>S/.{{this.getFinalBalance(operation).toFixed(2)}}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td style="position:relative;left:110px;">S/.{{this.finalincomes.toFixed(2)}}</td>
+                                    <td style="position:relative;left:110px;">S/.{{this.finalexpenses.toFixed(2)}}</td>
+                                    <td style="position:relative;left:110px;">S/.{{(this.finalBalance-this.finalexpenses+this.finalincomes).toFixed(2)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>
+
+
+

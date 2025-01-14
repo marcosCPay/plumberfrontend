@@ -1,0 +1,107 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Movimientos</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Mantenimiento</a></li>
+                    <li class="breadcrumb-item active">Movimientos de inventario</li>
+                </ol>
+            </div>
+        </div>
+
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-success" (click)="creating=true;" data-toggle="modal"
+                    data-target="#modal-default"><i class="fa fa-plus"></i>&nbsp;&nbsp; Nuevo Movimiento</button>
+                <br><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Movimientos de inventario</h3>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table"
+                            class="table row-border hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Descripcion</th>
+                                    <th>Fecha de movimiento</th>
+                                    <th>Usuario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let operation of operations">
+                                    <td>{{operation.Description}}</td>
+                                    <td>{{operation.Date}}</td>
+                                    <td>{{operation.userName}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-default" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form ngNativeValidate [formGroup]="formMovement" (ngSubmit)="submit()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{creating?'Nuevo':'Editando'}} Movimiento</h4>
+                        <button (click)="closeModal()" type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="selectProduct">Producto</label>
+                            <select name="Product" class="form-control" formControlName="ProductId" (change)="updateActualUbications()">
+                                <option value="" disabled selected hidden>Selecciona un producto</option>
+                                <option *ngFor="let product of products" [value]="product.ProductId">{{product.Description}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectActualUbication">Ubicatión actual</label>
+                            <select name="ActualUbication" class="form-control" formControlName="ActualUbicationId" (change)="updateNewUbications()">
+                                <option value="" disabled selected hidden>Selecciona la ubicación actual</option>
+                                <option *ngFor="let actualubication of actualubications" [value]="actualubication.UbicationId">{{actualubication.Name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectNewUbication">Nueva ubicación</label>
+                            <select name="NewUbication" class="form-control" formControlName="NewUbicationId">
+                                <option value="" disabled selected hidden>Selecciona la nueva ubicación</option>
+                                <option *ngFor="let newubication of newubications" [value]="newubication.UbicationId">{{newubication.Name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputAmount">Cantidad</label>
+                            <input required type="text" class="form-control" name="" formControlName="Amount"
+                                class="form-control" placeholder="Ingrese cantidad" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeModal()">
+                            Cerrar</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;&nbsp;
+                            Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

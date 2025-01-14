@@ -1,0 +1,92 @@
+<div class="container">
+    <div class="login-box">
+        <form ngNativeValidate [formGroup]="formRegister" (ngSubmit)="submit()">
+            <div class="">
+                <p class="registration-title">Plumber Registration</p>
+                <p>Complete the required fields below to register as a plumber.</p>
+            </div>
+
+            <div class="form-group position-relative mb-4" style="margin-top: 20px;">
+                <input type="text" id="companyName" name="companyName" class="form-control form-control-lg" placeholder=" "
+                    formControlName="companyName">
+                <label for="name" class="floating-label position-absolute">Company Name</label>
+            </div>
+
+            <div class="row g-2">
+                <div class="col-6 pe-2">
+                    <button type="button" class="btn btn-select w-100" [class.selected]="isSelfEmployed"
+                        (click)="selectRegistrationType('selfEmployed')" aria-pressed="false">Self <br>Employed</button>
+                </div>
+                <div class="col-6 pe-2">
+                    <button type="button" class="btn btn-select w-100" [class.selected]="!isSelfEmployed"
+                        (click)="selectRegistrationType('companyRep')" aria-pressed="false">Company Representative</button>
+                </div>
+            </div>
+
+            <div class="form-group position-relative mb-4">
+                <input type="text" id="firstName" name="firstName" class="form-control form-control-lg" placeholder=" "
+                formControlName="name">
+                <label for="name" class="floating-label position-absolute">First Name</label>
+            </div>
+
+            <div class="form-group position-relative mb-4">
+                <input type="text" id="lastName" name="lastName" class="form-control form-control-lg" placeholder=" "
+                    formControlName="lastName">
+                <label for="name" class="floating-label position-absolute">Last name</label>
+            </div>
+
+            <div class="form-group position-relative mb-4">
+                <input type="text" id="ssn" name="ssn" class="form-control form-control-lg" placeholder=" "
+                    formControlName="securityNumber" [ngClass]="{'is-invalid': formRegister.get('securityNumber')?.invalid && formRegister.get('securityNumber')?.touched}">
+                <label for="ssn" class="floating-label position-absolute">{{ securityNumberLabel }}</label>
+                <div class="invalid-feedback" *ngIf="formRegister.get('securityNumber')?.invalid && formRegister.get('securityNumber')?.touched">
+                    The SSN must be exactly 9 digits.
+                </div>
+
+            </div>
+
+            <div class="form-group position-relative mb-4">
+                <input type="email" id="email" name="email" class="form-control form-control-lg" placeholder=" "
+                    formControlName="email" [ngClass]="{'is-invalid': formRegister.get('email')?.invalid && formRegister.get('email')?.touched}">
+                <label for="email" class="floating-label position-absolute">Email Address</label>
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+            </div>
+
+            <div class="form-group position-relative mb-4">
+                <input type="password" id="password" name="password" class="form-control form-control-lg"
+                    placeholder=" " formControlName="password">
+                <label for="password" class="floating-label position-absolute">Password</label>
+            </div>
+
+            <div class="form-group position-relative mb-4">
+
+                <input type="tel" id="phone" name="phone" class="form-control form-control-lg" placeholder=" "
+                    formControlName="phone" [ngClass]="{'is-invalid': formRegister.get('phone')?.invalid && formRegister.get('phone')?.touched}">
+                <label for="phone" class="floating-label position-absolute">Phone Number</label>
+                <div class="invalid-feedback" *ngIf="formRegister.get('phone')?.invalid && formRegister.get('phone')?.touched">
+                    Please enter a valid U.S. phone number.
+                </div>
+            </div>
+
+            <div class="row g-2">
+                <div class="col-6 pe-2">
+                    <button type="button" class="btn btn-select w-100"
+                        (click)="selectRegistrationType('paypal')" [class.selected]="isPaypal" aria-pressed="false">Paypal</button>
+                </div>
+                <div class="col-6 pe-2">
+                    <button type="button" class="btn btn-select w-100" (click)="selectRegistrationType('bank')" [class.selected]="!isPaypal" aria-pressed="false">Bank</button>
+                </div>
+            </div>
+
+            <div class="form-group position-relative mb-4" style="margin-top:40px;">
+                <input type="text" id="paymentMethod" name="paymentMethod" class="form-control form-control-lg"
+                    placeholder=" " required formControlName="paymentMethod">
+                <label for="paymentMethod" class="floating-label position-absolute">{{ infoPaypalLabel }}</label>   
+            </div>
+
+            <div class="form-group position-relative mb-4">
+                <button type="submit" class="btn-select">Create Plumber</button>
+            </div>
+        </form>
+    </div>
+</div>
