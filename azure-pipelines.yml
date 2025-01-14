@@ -36,7 +36,7 @@ steps:
 
 - task: Docker@2
   inputs:
-    repository: 'plumberfrontend'
+    repository: 'plumber-frontend'
     command: 'push'
     tags: '$(Build.BuildId)'
     displayName: 'Docker Push'
